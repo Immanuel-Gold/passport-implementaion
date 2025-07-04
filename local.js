@@ -1,6 +1,6 @@
 import passport from "passport";
 import { Strategy } from "passport-local";
-import User from "./models/user.js";
+import User from "./models/User.js";
 
 passport.use(
   new Strategy({ usernameField: "email" }, async (email, password, done) => {

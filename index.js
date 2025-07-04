@@ -3,27 +3,28 @@ import express from "express";
 import session from "express-session";
 import mongoose from "mongoose";
 import passport from "passport";
-import User from "./models/user.js";
+import User from "./models/User.js";
 import bcrypt from "bcryptjs";
 import "./local.js";
 import MongoStore from "connect-mongo";
 import { verifyUser } from "./middleware/verify.js";
-mongoose.connect(
-  "mongodb+srv://pamsgold0:L2Vv2RkK78IYjcwK@session-tutorial.ivxpgis.mongodb.net/Session-Tutorial?retryWrites=true&w=majority&appName=Session-Tutorial"
-);
+import dotenv from "dotenv";
+dotenv.config();
+mongoose
+  .connect(process.env.MONGO_URI)
+  .finally(() => console.log(`MONGO_ACTIVE!`));
 const app = express();
 
 app.use(
   session({
-    secret: "S3CRET_KEY",
+    secret: process.env.SECRET_KEY,
     resave: false,
     saveUninitialized: false,
     cookie: {
       maxAge: 60000 * 60,
     },
     store: MongoStore.create({
-      mongoUrl:
-        "mongodb+srv://pamsgold0:L2Vv2RkK78IYjcwK@session-tutorial.ivxpgis.mongodb.net/Session-Tutorial?retryWrites=true&w=majority&appName=Session-Tutorial",
+      mongoUrl: process.env.MONGO_URI,
     }),
   })
 );
